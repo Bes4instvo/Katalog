@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 50px; }
+        input { display: block; width: 250px; margin: 10px auto; padding: 8px; }
+        button { padding: 10px 20px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h2>Регистрация</h2>
+    <input type="text" id="name" placeholder="Имя">
+    <input type="text" id="surname" placeholder="Фамилия">
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Пароль">
+    <button onclick="sendData()">Отправить</button>
+
+    <script>
+        async function sendData() {
+            const name = document.getElementById('name').value;
+            const surname = document.getElementById('surname').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (!name || !surname || !email || !password) {
+                alert("Заполните все поля!");
+                return;
+            }
+
+            const response = await fetch('http://localhost:5000/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, surname, email, password })
+            });
+
+            const result = await response.json();
+            alert(result.message || result.error);
+        }
+    </script>
+    <script src="server.js"></script>
+</body>
+</html>
